@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6006539581152388786
+--- !u!114 &-379956540761882290
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,14 +20,15 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: URPTest
-  m_Shader: {fileID: 4800000, guid: 213acce0d54aa2149b2a388a79cf2811, type: 3}
+  m_Name: Transluency
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -90,7 +91,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaClip: 0
-    - _AlphaCutoff: 0.5
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -100,9 +100,7 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emission: 0
     - _EnvironmentReflections: 1
-    - _Float0: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -116,20 +114,6 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TessEdgeLength: 16
-    - _TessMax: 25
-    - _TessMaxDisp: 25
-    - _TessMin: 9.29
-    - _TessPhongStrength: 0.358
-    - _TessValue: 14.8
-    - _TransAmbient: 0.051
-    - _TransDirect: 0.266
-    - _TransNormal: 0.436
-    - _TransScattering: 20.2
-    - _TransShadow: 0.426
-    - _TransStrength: 8.4
-    - _Translucency: 0.8117647
-    - _TransmissionShadow: 0.5
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
