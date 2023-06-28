@@ -81,6 +81,16 @@ namespace AmplifyShaderEditor
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "e918f92d1b93fad45a2cf927f1085e48" );
 		}
+		[MenuItem( "Assets/Create/Amplify Shader/Universal/UniversalPBR_Template_New", false, 85 )]
+		public static void ApplyTemplateUniversalUniversalPBR_Template_New()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "789fddfe25d5dbe4997b9bfb044c29ae" );
+		}
+		[MenuItem( "Assets/Create/Amplify Shader/Universal/UniversalPBR_Template_NewNew", false, 85 )]
+		public static void ApplyTemplateUniversalUniversalPBR_Template_NewNew()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "a9133e66dbdc9b849811d58197455314" );
+		}
 		[MenuItem( "Assets/Create/Amplify Shader/Universal/Unlit", false, 85 )]
 		public static void ApplyTemplateUniversalUnlit()
 		{

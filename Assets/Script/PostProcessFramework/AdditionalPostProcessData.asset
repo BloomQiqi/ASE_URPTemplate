@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a559255a48d485842829b8982ef5ef5f, type: 3}
+  m_Name: AdditionalPostProcessData
+  m_EditorClassIdentifier: 
+  shaders:
+    brightnessSaturationContrast: {fileID: 0}
+    fog: {fileID: 0}
+  materials:
+    brightnessSaturationContrast: {fileID: 2100000, guid: 9c1a33a04179ed64599a3d273c900ac5, type: 2}
+    fog: {fileID: 2100000, guid: 4fb7996ad45c7d643ad09e025481a821, type: 2}
