@@ -129,6 +129,8 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
 
                 half4 color = /*ase_frag_out:Color;Float4*/IN.color * (tex2D(_MainTex, TRANSFORM_TEX(IN.texcoord.xy, _MainTex)) + _TextureSampleAdd)/*end*/;
 
+                half alpha = /*ase_frag_out:Alpha;Float*/1/*end*/;
+
                 #ifdef UNITY_UI_CLIP_RECT
                 half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(IN.mask.xy)) * IN.mask.zw);
                 color.a *= m.x * m.y;
