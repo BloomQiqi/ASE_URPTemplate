@@ -28,10 +28,12 @@ public class SoftMaskEditor : Editor
     {
         base.OnInspectorGUI();
 
-        var current = target as SoftMask;
+		SoftMask current = target as SoftMask;
         current.GetComponentsInChildren<Graphic>(true, s_Graphics);
 
-        var currentImage = current.graphic as Image;
+        current.ShowMask(current.showMaskGraphic);
+
+        Image currentImage = current.graphic as Image;
         if (currentImage && IsMaskUI(currentImage.sprite))
         {
             GUILayout.BeginHorizontal();
@@ -62,7 +64,10 @@ public class SoftMaskEditor : Editor
             Repaint();
         }
 
+
         GUILayout.EndVertical();
+
+
     }
 
     private static bool IsMaskUI(Object obj)

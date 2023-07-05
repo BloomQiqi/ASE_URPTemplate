@@ -1,4 +1,6 @@
-Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
+// Made with Amplify Shader Editor v1.9.1.5
+// Available at the Unity Asset Store - http://u3d.as/y3X 
+Shader "UI(SoftMaskable)"
 {
     Properties
     {
@@ -15,28 +17,18 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
 
         [Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
 
-        /*ase_props*/
+        _SoftMaskTex("_SoftMaskTex", 2D) = "black" {}
+
     }
 
     SubShader
     {
-        Tags
-        {
-            "Queue"="Transparent"
-            "IgnoreProjector"="True"
-            "RenderType"="Transparent"
-            "PreviewType"="Plane"
-            "CanUseSpriteAtlas"="True"
-        }
+		LOD 0
 
-        Stencil
-        {
-            Ref [_Stencil]
-            Comp [_StencilComp]
-            Pass [_StencilOp]
-            ReadMask [_StencilReadMask]
-            WriteMask [_StencilWriteMask]
-        }
+        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
+
+        
+
 
         Cull Off
         Lighting Off
@@ -45,11 +37,12 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
         Blend One OneMinusSrcAlpha
         ColorMask [_ColorMask]
 
-        /*ase_pass*/
+        
         Pass
         {
             Name "Default"
         CGPROGRAM
+            
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.0
@@ -66,7 +59,7 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
                 float4 color    : COLOR;
                 float2 texcoord : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
-                /*ase_vdata:p=p;uv0=tc0.xy;c=c*/
+                
             };
 
             struct v2f
@@ -77,7 +70,7 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
                 float4 worldPosition : TEXCOORD1;
                 float4  mask : TEXCOORD2;
                 UNITY_VERTEX_OUTPUT_STEREO
-                /*ase_interp(3,):sp=sp.xyzw;uv0=tc0.xy;c=c;uv1=tc1.xyzw*/
+                float4 ase_texcoord3 : TEXCOORD3;
             };
 
             sampler2D _MainTex;
@@ -88,17 +81,21 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
             float _UIMaskSoftnessX;
             float _UIMaskSoftnessY;
 
-            /*ase_globals*/
+            uniform sampler2D _SoftMaskTex;
+
             
-            v2f vert(appdata_t v /*ase_vert_input*/)
+            v2f vert(appdata_t v )
             {
                 v2f OUT;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
-                /*ase_vert_code:v=appdata_t;OUT=v2f*/
+                float4 ase_clipPos = UnityObjectToClipPos(v.vertex);
+                float4 screenPos = ComputeScreenPos(ase_clipPos);
+                OUT.ase_texcoord3 = screenPos;
+                
 
-                v.vertex.xyz += /*ase_vert_out:Offset;Float3*/ float3( 0, 0, 0 ) /*end*/;
+                v.vertex.xyz +=  float3( 0, 0, 0 ) ;
 
                 float4 vPosition = UnityObjectToClipPos(v.vertex);
                 OUT.worldPosition = v.vertex;
@@ -116,7 +113,7 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
                 return OUT;
             }
 
-            fixed4 frag(v2f IN /*ase_frag_input*/) : SV_Target
+            fixed4 frag(v2f IN ) : SV_Target
             {
                 //Round up the alpha color coming from the interpolator (to 1.0/256.0 steps)
                 //The incoming alpha could have numerical instability, which makes it very sensible to
@@ -125,11 +122,15 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
                 const half invAlphaPrecision = half(1.0/alphaPrecision);
                 IN.color.a = round(IN.color.a * alphaPrecision)*invAlphaPrecision;
 
-                /*ase_frag_code:IN=v2f*/
+                float4 screenPos = IN.ase_texcoord3;
+                float4 ase_screenPosNorm = screenPos / screenPos.w;
+                ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+                float2 appendResult93 = (float2(ase_screenPosNorm.x , ase_screenPosNorm.y));
+                
 
-                half4 color = /*ase_frag_out:Color;Float4*/IN.color * (tex2D(_MainTex, TRANSFORM_TEX(IN.texcoord.xy, _MainTex)) + _TextureSampleAdd)/*end*/;
+                half4 color = IN.color * (tex2D(_MainTex, TRANSFORM_TEX(IN.texcoord.xy, _MainTex)) + _TextureSampleAdd);
 
-                half alpha = /*ase_frag_out:Alpha;Float*/1/*end*/;
+                half alpha = tex2D( _SoftMaskTex, appendResult93 ).r;
 
                 color.a *= alpha;
 
@@ -150,4 +151,18 @@ Shader /*ase_name*/"Hidden/Templates/UI-Default"/*end*/
         }
     }
     CustomEditor "ASEMaterialInspector"
+	
+	Fallback Off
 }
+/*ASEBEGIN
+Version=19105
+Node;AmplifyShaderEditor.ScreenPosInputsNode;92;3766.865,-734.2762;Float;False;0;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;4844.343,-531.575;Float;False;True;-1;2;ASEMaterialInspector;0;3;UI(SoftMaskable);5056123faa0c79b47ab6ad7e8bf059a4;True;Default;0;0;Default;3;False;True;3;1;False;;10;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;True;True;True;True;True;0;True;_ColorMask;False;False;False;False;False;False;False;True;False;0;True;_Stencil;255;True;_StencilReadMask;255;True;_StencilWriteMask;0;True;_StencilComp;0;True;_StencilOp;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;0;True;unity_GUIZTestMode;False;True;5;Queue=Transparent=Queue=0;IgnoreProjector=True;RenderType=Transparent=RenderType;PreviewType=Plane;CanUseSpriteAtlas=True;False;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;0;;0;0;Standard;0;0;1;True;False;;False;0
+Node;AmplifyShaderEditor.SamplerNode;90;4272.893,-517.235;Inherit;True;Property;_SoftMaskTex;_SoftMaskTex;0;0;Create;True;0;0;0;True;0;False;-1;None;None;True;0;False;black;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.DynamicAppendNode;93;4080.865,-629.2762;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
+WireConnection;0;1;90;1
+WireConnection;90;1;93;0
+WireConnection;93;0;92;1
+WireConnection;93;1;92;2
+ASEEND*/
+//CHKSM=91C2D71E5E4CD60D1CA922585C30C370715C4CCA

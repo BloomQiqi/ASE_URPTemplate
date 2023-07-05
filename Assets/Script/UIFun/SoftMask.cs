@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 [ExecuteAlways]
-public class SoftMask : Mask, IMeshModifier
+public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 {
 	[Range(0, 1)]
 	public float softness = 1;
@@ -83,7 +83,9 @@ public class SoftMask : Mask, IMeshModifier
 		cb = new CommandBuffer();
 		mpb = new MaterialPropertyBlock();
 
-		Canvas.willRenderCanvases += UpdateMaskTextures;
+		//Canvas.willRenderCanvases += UpdateMaskTextures;
+
+		ShowMask(showMaskGraphic);		
 	}
 
 	private void OnDisable()
@@ -93,13 +95,43 @@ public class SoftMask : Mask, IMeshModifier
 		cb.Release();
 		cb = null;
 
-
-		Canvas.willRenderCanvases -= UpdateMaskTextures;
+		//Canvas.willRenderCanvases -= UpdateMaskTextures;
 	}
 
-	private void Update()
+	Image _image;
+	Image image 
 	{
+		get
+		{
+			if (_image == null)
+			{
+				_image = GetComponent<Image>();
+			}
+			return _image;
+		}
+	}
 
+	public void ShowMask(bool show)
+	{
+		if (show)
+		{
+			image.color = new Color(image.color.r, image.color.g, image.color.b, 1);
+			//image.material.SetFloat("_ColorMask", 15);//显示RGBA
+		}
+		else
+		{
+			image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
+			//image.material.SetFloat("_ColorMask", 0);//不显示RGBA
+		}
+
+	}
+
+	//当UI重构时调用
+	public Material GetModifiedMaterial(Material baseMaterial)
+	{
+		base.GetModifiedMaterial(baseMaterial);
+		UpdateMaskTextures();
+		return baseMaterial;
 	}
 
 	private void UpdateMaskTextures() 
@@ -115,7 +147,7 @@ public class SoftMask : Mask, IMeshModifier
 
 		SetViewProjectionMatrices();
 
-		material.SetInt(s_ColorMaskId, 8);
+		material.SetInt(s_ColorMaskId, 8);//只显示R通道
 		mpb.SetTexture(s_MainTexId, graphic.mainTexture);
 		mpb.SetFloat(s_SoftnessId, softness);
 		mpb.SetFloat(s_Alpha, m_Alpha);
@@ -123,7 +155,6 @@ public class SoftMask : Mask, IMeshModifier
 		cb.DrawMesh(mesh, transform.localToWorldMatrix, material, 0, 0, mpb);
 
 		Graphics.ExecuteCommandBuffer(cb);
-
 
 		Profiler.EndSample();
 	}
@@ -150,7 +181,12 @@ public class SoftMask : Mask, IMeshModifier
 		Profiler.EndSample();
 	}
 
-	private static void ReleaseRt(ref RenderTexture tmpRT)
+	public void ReleaseMaskBuffer()
+	{
+		ReleaseRT(ref softMaskBuffer);
+	}
+
+	private void ReleaseRT(ref RenderTexture tmpRT)
 	{
 		if (!tmpRT) return;
 
