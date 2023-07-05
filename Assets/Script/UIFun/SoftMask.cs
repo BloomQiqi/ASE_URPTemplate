@@ -6,11 +6,19 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 {
+
 	[Range(0, 1)]
 	public float softness = 1;
 
 	[Range(0f, 1f), Tooltip("The transparency of the whole masked graphic.")]
 	public float m_Alpha = 1;
+
+	[Header("Advanced Options")]
+	[SerializeField, Tooltip("Should the soft mask ignore parent soft masks?")]
+	private bool m_IgnoreParent = false;
+
+	[SerializeField, Tooltip("Is the soft mask a part of parent soft mask?")]
+	private bool m_PartOfParent = false;
 
 	private static int s_ColorMaskId = Shader.PropertyToID("_ColorMask");
 	private static int s_MainTexId = Shader.PropertyToID("_MainTex");
@@ -32,8 +40,7 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 		}
 	}
 
-	Shader s_SoftMaskShader;
-
+	//Bake Mask Buffer Material
 	Material _material;
 	Material material
 	{
@@ -42,10 +49,7 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 			return _material
 				? _material
 				: _material =
-					new Material(s_SoftMaskShader
-						? s_SoftMaskShader
-						: s_SoftMaskShader = Resources.Load<Shader>("SoftMask"))
-					{ hideFlags = HideFlags.HideAndDontSave };
+					new Material(Shader.Find("Hidden/SoftMask"));
 		}
 	}
 
@@ -83,13 +87,17 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 		cb = new CommandBuffer();
 		mpb = new MaterialPropertyBlock();
 
+		GetComponent<Image>().material = null;
 		//Canvas.willRenderCanvases += UpdateMaskTextures;
+		base.OnEnable();
 
-		ShowMask(showMaskGraphic);		
+		ShowMask(showMaskGraphic);
+
 	}
 
 	private void OnDisable()
 	{
+		base.OnDisable();
 		mpb.Clear();
 		mpb = null;
 		cb.Release();
@@ -126,16 +134,28 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 
 	}
 
-	//当UI重构时调用
-	public Material GetModifiedMaterial(Material baseMaterial)
+
+	private void Update()
 	{
-		base.GetModifiedMaterial(baseMaterial);
+		if (transform.hasChanged)
+		{
+			UpdateMaskTextures();
+		}
+	}
+
+	//当UI重构时调用
+	public override Material GetModifiedMaterial(Material baseMaterial)
+	{
 		UpdateMaskTextures();
-		return baseMaterial;
+
+		var result = base.GetModifiedMaterial(baseMaterial);
+
+		return result;
 	}
 
 	private void UpdateMaskTextures() 
 	{
+		if(!enabled) return;
 		Profiler.BeginSample("UpdateMaskTexture");
 
 		Profiler.BeginSample("Initialize CommandBuffer");

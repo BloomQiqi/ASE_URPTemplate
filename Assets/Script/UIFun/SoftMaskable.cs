@@ -10,6 +10,17 @@ public class SoftMaskable : MonoBehaviour, IMaterialModifier
 	private static int s_SoftMaskTexId;
 
 
+	private Material m_Material;
+
+	public Material Material
+	{
+		get 
+		{
+			return m_Material ? m_Material : m_Material = new Material(Shader.Find("UI(SoftMaskable)"));
+		}
+	}
+
+
 	private SoftMask _softMask;
 	public SoftMask softMask
 	{
@@ -19,25 +30,40 @@ public class SoftMaskable : MonoBehaviour, IMaterialModifier
 	private void OnEnable()
 	{
 		s_SoftMaskTexId = Shader.PropertyToID("_SoftMaskTex");
+		GetComponent<Image>().material = Material;
 
 		_softMask = null;
 	}
 
+	void Update()
+	{
+		if (transform.hasChanged)
+		{
+			UpdateMaskBuffer(Material);
+		}
+	}
 
 	public Material GetModifiedMaterial(Material baseMaterial)
 	{
 		if (baseMaterial.shader.name.EndsWith("(SoftMaskable)"))
 		{
-			baseMaterial.SetTexture(s_SoftMaskTexId, softMask.SoftMaskBuffer);
+			//baseMaterial.SetTexture(s_SoftMaskTexId, softMask.SoftMaskBuffer);
 			//softMask.ReleaseMaskBuffer();
+			UpdateMaskBuffer(baseMaterial);
 		}
 		else
 		{
-			Debug.LogError("SoftMaskable 的 Shader 指定错误！");
+			Debug.LogError("Shader 指定错误！");
 		}
 
 		return baseMaterial;
 	}
+
+	void UpdateMaskBuffer(Material material)
+	{
+		material.SetTexture(s_SoftMaskTexId, softMask.SoftMaskBuffer);
+	}
+
 
 	public static T GetComponentInParentEx<T>(Component component, bool includeInactive = false) where T : MonoBehaviour
 	{
