@@ -83,7 +83,7 @@ SubShader {
 		CGPROGRAM
 		#pragma vertex VertShader
 		#pragma fragment PixShader
-		#pragma shader_feature __ OUTLINE_ON
+		#pragma shader_feature __ OUTLINE_ON OUTLINE_OUT_ON OUTLINE_IN_ON 
 		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
 
 		#pragma multi_compile __ UNITY_UI_CLIP_RECT
@@ -202,7 +202,7 @@ SubShader {
 
 			#ifdef OUTLINE_ON
 			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.z));
-			c *= saturate(d - input.param.y);
+			c *= saturate(d - input.param.w);
 			#endif
 
 			#if UNDERLAY_ON
