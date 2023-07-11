@@ -18,6 +18,7 @@ public class SoftMaskEditor : Editor
     private const string k_PrefsPreview = "SoftMaskEditor_Preview";
     private static readonly List<Graphic> s_Graphics = new List<Graphic>();
     private static bool s_Preview;
+    private bool s_EffectByParentChanged = false;
 
     private void OnEnable()
     {
@@ -33,19 +34,17 @@ public class SoftMaskEditor : Editor
 
         current.ShowMask(current.showMaskGraphic);
 
+        if(current.M_EffectByParent != s_EffectByParentChanged)
+        {
+            current.EffectByParent(current.M_EffectByParent);
+            s_EffectByParentChanged = current.M_EffectByParent;
+		}
+
         Image currentImage = current.graphic as Image;
         if (currentImage && IsMaskUI(currentImage.sprite))
         {
             GUILayout.BeginHorizontal();
             EditorGUILayout.HelpBox("SoftMask does not recommend to use 'UIMask' sprite as a source image.\n(It contains only small alpha pixels.)\nDo you want to use 'UISprite' instead?", MessageType.Warning);
-            GUILayout.BeginVertical();
-
-            if (GUILayout.Button("Fix"))
-            {
-                currentImage.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
-            }
-
-            GUILayout.EndVertical();
             GUILayout.EndHorizontal();
         }
 
@@ -63,11 +62,7 @@ public class SoftMaskEditor : Editor
             EditorGUI.DrawPreviewTexture(GUILayoutUtility.GetRect(width, k_PreviewSize), tex, null, ScaleMode.ScaleToFit);
             Repaint();
         }
-
-
         GUILayout.EndVertical();
-
-
     }
 
     private static bool IsMaskUI(Object obj)

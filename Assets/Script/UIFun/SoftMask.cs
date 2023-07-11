@@ -3,9 +3,20 @@ using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-[ExecuteAlways]
+[ExecuteAlways, RequireComponent(typeof(Image))]
 public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 {
+	/// <summary>
+	/// Down sampling rate.
+	/// </summary>
+	public enum DownSamplingRate
+	{
+		None = 0,
+		x1 = 1,
+		x2 = 2,
+		x4 = 4,
+		x8 = 8,
+	}
 
 	[Range(0, 1)]
 	public float softness = 1;
@@ -14,16 +25,35 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 	public float m_Alpha = 1;
 
 	[Header("Advanced Options")]
-	[SerializeField, Tooltip("Should the soft mask ignore parent soft masks?")]
-	private bool m_IgnoreParent = false;
+	[SerializeField, Tooltip("Should the soft mask effected by parent soft masks?")]
+	private bool m_EffectByParent = true;
+	public bool M_EffectByParent 
+	{
+		get 
+		{ 
+			return m_EffectByParent; 
+		} 
+		set 
+		{ 
+			m_EffectByParent = value;
+		}
+	}
 
-	[SerializeField, Tooltip("Is the soft mask a part of parent soft mask?")]
-	private bool m_PartOfParent = false;
+	private DownSamplingRate m_DownSamplingRate = DownSamplingRate.x4;
 
 	private static int s_ColorMaskId = Shader.PropertyToID("_ColorMask");
 	private static int s_MainTexId = Shader.PropertyToID("_MainTex");
 	private static int s_SoftnessId = Shader.PropertyToID("_Softness");
 	private static int s_Alpha = Shader.PropertyToID("_Alpha");
+
+	private static int s_SoftMaskTexId = Shader.PropertyToID("_SoftMaskTex");
+
+	private bool _hasChanged = false;
+	public bool HasChanged
+	{
+		get { return _hasChanged; }
+		set { _hasChanged = value; }
+	}
 
 	RenderTexture softMaskBuffer;
 	public RenderTexture SoftMaskBuffer
@@ -33,12 +63,41 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 			if (softMaskBuffer == null)
 			{
 				int w, h;
-				w = Camera.main.pixelWidth; h = Camera.main.pixelHeight;
-				softMaskBuffer = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default, 1, RenderTextureMemoryless.Depth);
+				GetDownSamplingSize(m_DownSamplingRate, out w, out h);
+				softMaskBuffer = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.R8, RenderTextureReadWrite.Default, 1, RenderTextureMemoryless.Depth);
 			}
 			return softMaskBuffer; 
 		}
 	}
+
+	Image m_Image;
+	public Image Image
+	{
+		get 
+		{ 
+			if(m_Image == null)
+			{
+				m_Image = GetComponent<Image>();
+			}
+			return m_Image; 
+		}
+	}
+
+	Material _imageMat;
+
+	Material ImageMaterial
+	{
+		get 
+		{ 
+			if(_imageMat == null)
+			{
+				_imageMat = new Material(Shader.Find("UI/Default"));
+				Image.material = _imageMat;
+			}
+			return Image.material; 
+		}
+	}
+
 
 	//Bake Mask Buffer Material
 	Material _material;
@@ -49,7 +108,7 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 			return _material
 				? _material
 				: _material =
-					new Material(Shader.Find("Hidden/SoftMask"));
+					new Material(Shader.Find("UI/SoftMaskBuffer"));
 		}
 	}
 
@@ -86,70 +145,79 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 	{
 		cb = new CommandBuffer();
 		mpb = new MaterialPropertyBlock();
+		pri_worldPosition = transform.position;
+		pri_scale = transform.localScale;
+		pri_rotation = transform.rotation;
 
-		GetComponent<Image>().material = null;
 		//Canvas.willRenderCanvases += UpdateMaskTextures;
-		base.OnEnable();
-
+		UpdateMaskTextures();
 		ShowMask(showMaskGraphic);
-
+		EffectByParent(M_EffectByParent);
+		base.OnEnable();
 	}
 
 	private void OnDisable()
 	{
-		base.OnDisable();
 		mpb.Clear();
 		mpb = null;
 		cb.Release();
 		cb = null;
-
+		base.OnDisable();
 		//Canvas.willRenderCanvases -= UpdateMaskTextures;
 	}
 
-	Image _image;
-	Image image 
+	protected override void OnRectTransformDimensionsChange()
 	{
-		get
-		{
-			if (_image == null)
-			{
-				_image = GetComponent<Image>();
-			}
-			return _image;
-		}
+		HasChanged = true;
 	}
 
 	public void ShowMask(bool show)
 	{
-		if (show)
+		if (show != showMaskGraphic)
 		{
-			image.color = new Color(image.color.r, image.color.g, image.color.b, 1);
-			//image.material.SetFloat("_ColorMask", 15);//显示RGBA
+			ImageMaterial.SetFloat(s_ColorMaskId, show ? (float)ColorWriteMask.All : 0);
 		}
-		else
-		{
-			image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
-			//image.material.SetFloat("_ColorMask", 0);//不显示RGBA
-		}
-
 	}
 
+	Vector3 pri_worldPosition;
+	Vector3 pri_scale;
+	Quaternion pri_rotation;
 
 	private void Update()
 	{
-		if (transform.hasChanged)
+		DetectTransformChanged();
+
+		if(HasChanged == true)
 		{
 			UpdateMaskTextures();
+			HasChanged = false;
+		}
+	}
+
+	void DetectTransformChanged()
+	{
+		if (!pri_worldPosition.Equals(transform.position)) 
+		{ 
+			HasChanged = true; 
+			pri_worldPosition = transform.position;  
+		}
+		if (!pri_rotation.Equals(transform.rotation)) 
+		{
+			HasChanged = true;
+			pri_rotation = transform.rotation;
+		}
+		if (!pri_scale.Equals(transform.localScale)) 
+		{
+			HasChanged = true; 
+			pri_scale = transform.localScale;
 		}
 	}
 
 	//当UI重构时调用
 	public override Material GetModifiedMaterial(Material baseMaterial)
 	{
-		UpdateMaskTextures();
-
 		var result = base.GetModifiedMaterial(baseMaterial);
-
+		UpdateMaskTextures();
 		return result;
 	}
 
@@ -179,6 +247,31 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 		Profiler.EndSample();
 	}
 
+	public void EffectByParent(bool isEffected)
+	{
+		if (isEffected)
+		{
+			SoftMask parent = SoftMaskable.GetComponentInParentEx<SoftMask>(this);
+			if (parent != null)
+			{
+				if (!TryGetComponent<SoftMaskable>(out SoftMaskable softMaskable))
+				{
+					gameObject.AddComponent<SoftMaskable>();
+				}
+				material.SetTexture(s_SoftMaskTexId, parent.SoftMaskBuffer);
+			}
+		}
+		else
+		{
+			if (TryGetComponent<SoftMaskable>(out SoftMaskable softMaskable))
+			{
+				DestroyImmediate(softMaskable);
+			}
+			material.SetTexture(s_SoftMaskTexId, Texture2D.whiteTexture);
+		}
+		_hasChanged = true;
+	}
+
 	void SetViewProjectionMatrices()
 	{
 		// Set view and projection matrices.
@@ -199,6 +292,12 @@ public class SoftMask : Mask, IMeshModifier, IMaterialModifier
 		}
 
 		Profiler.EndSample();
+	}
+
+	private static void GetDownSamplingSize(DownSamplingRate rate, out int w, out int h)
+	{
+		w = Screen.currentResolution.width / (int)rate; 
+		h = Screen.currentResolution.height / (int)rate;
 	}
 
 	public void ReleaseMaskBuffer()
