@@ -202,6 +202,12 @@ SubShader {
 
 			#ifdef OUTLINE_ON
 			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.z));
+			c *= saturate(d - input.param.y);
+			#elif OUTLINE_OUT_ON
+			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.w));
+			c *= saturate(d - input.param.y);
+			#elif OUTLINE_IN_ON
+			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.z));
 			c *= saturate(d - input.param.w);
 			#endif
 

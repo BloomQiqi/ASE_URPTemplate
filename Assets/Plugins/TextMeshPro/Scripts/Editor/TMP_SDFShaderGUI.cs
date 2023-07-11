@@ -19,7 +19,12 @@ namespace TMPro.EditorUtilities
             s_OutlineFeature = new ShaderFeature()
             {
                 undoLabel = "Outline",
-                keywords = new[] { "OUTLINE_ON" }
+                keywords = new[] { "OUTLINE_ON", "OUTLINE_OUT_ON", "OUTLINE_IN_ON" },
+                label = new GUIContent("Outline Type"),
+                keywordLabels = new[]
+                {
+                    new GUIContent("None"), new GUIContent("Both"), new GUIContent("Out"), new GUIContent("Inner")
+                }
             };
 
             s_UnderlayFeature = new ShaderFeature()
@@ -240,6 +245,7 @@ namespace TMPro.EditorUtilities
         void DoOutlinePanel()
         {
             EditorGUI.indentLevel += 1;
+            s_OutlineFeature.DoPopup(m_Editor, m_Material);
             DoColor("_OutlineColor", "Color");
             if (m_Material.HasProperty(ShaderUtilities.ID_OutlineTex))
             {
@@ -266,7 +272,8 @@ namespace TMPro.EditorUtilities
         void DoOutline2Panel()
         {
             EditorGUI.indentLevel += 1;
-            DoColor("_Outline2Color", "Color");
+			s_OutlineFeature.DoPopup(m_Editor, m_Material);
+			DoColor("_Outline2Color", "Color");
             //if (m_Material.HasProperty(ShaderUtilities.ID_OutlineTex))
             //{
             //    if (m_Material.HasProperty("_OutlineUVSpeedX"))
