@@ -12,6 +12,14 @@ fixed4 GetColor(half d, fixed4 faceColor, fixed4 outlineColor, half outline, hal
 	half faceAlpha = 1-saturate((d - outline * 0.5 + softness * 0.5) / (1.0 + softness));
 	half outlineAlpha = saturate((d + outline * 0.5)) * sqrt(min(1.0, outline));
 
+#ifdef OUTLINE_OUT_ON
+	faceAlpha = 1 - saturate((d - outline * 0.5 + softness * 0.5) / (1.0 + softness));
+	outlineAlpha = saturate(d);
+#elif OUTLINE_IN_ON
+	faceAlpha = 1 - saturate((d + softness * 0.5) / (1.0 + softness));
+	outlineAlpha = saturate((d + outline * 0.5)) * sqrt(min(1.0, outline));
+#endif
+
 	faceColor.rgb *= faceColor.a;
 	outlineColor.rgb *= outlineColor.a;
 

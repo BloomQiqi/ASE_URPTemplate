@@ -12,6 +12,7 @@ Properties {
 	[HDR]_OutlineColor	("Outline Color", Color) = (0,0,0,1)
 	_OutlineWidth		("Outline Thickness", Range(0,1)) = 0
 	_OutlineSoftness	("Outline Softness", Range(0,1)) = 0
+	_OutlineColorSoftness("Outline Color Softness", Range(0,1)) = 0
 
 	[HDR]_UnderlayColor	("Border Color", Color) = (0,0,0,.5)
 	_UnderlayOffsetX 	("Border OffsetX", Range(-1,1)) = 0
@@ -146,7 +147,7 @@ SubShader {
 
 			float layerScale = scale;
 
-			scale /= 1 + (_OutlineSoftness * _ScaleRatioA * scale);
+			scale /= 1 + (0 * _ScaleRatioA * scale);
 			float bias = (0.5 - weight) * scale - 0.5;
 			float outline = _OutlineWidth * _ScaleRatioA * 0.5 * scale;
 
@@ -200,11 +201,13 @@ SubShader {
 			half d = tex2D(_MainTex, input.texcoord0.xy).a * input.param.x;
 			half4 c = input.faceColor * saturate(d - input.param.w);
 
+			float outline = input.param.z - input.param.w;
+
 			#ifdef OUTLINE_ON
 			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.z));
 			c *= saturate(d - input.param.y);
 			#elif OUTLINE_OUT_ON
-			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.w));
+			c = lerp(outlineColor, input.faceColor, saturate(d - input.param.w));
 			c *= saturate(d - input.param.y);
 			#elif OUTLINE_IN_ON
 			c = lerp(input.outlineColor, input.faceColor, saturate(d - input.param.z));

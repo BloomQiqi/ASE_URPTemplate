@@ -48,6 +48,7 @@ Properties {
 	_GlowInner			("Inner", Range(0,1)) = 0.05
 	_GlowOuter			("Outer", Range(0,1)) = 0.05
 	_GlowPower			("Falloff", Range(1, 0)) = 0.75
+	_BlurSize			("Blur Size", Range(0, 5)) = 1 
 
 	_WeightNormal		("Weight Normal", float) = 0
 	_WeightBold			("Weight Bold", float) = 0.5
@@ -118,6 +119,7 @@ SubShader {
 		#pragma shader_feature __ BEVEL_ON
 		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
 		#pragma shader_feature __ GLOW_ON
+		#pragma shader_feature __ OUTLINE_ON OUTLINE_OUT_ON OUTLINE_IN_ON 
 
 		#pragma multi_compile __ UNITY_UI_CLIP_RECT
 		#pragma multi_compile __ UNITY_UI_ALPHACLIP
@@ -152,6 +154,7 @@ SubShader {
 			fixed4	underlayColor	: COLOR1;
 		#endif
 			float4 textures			: TEXCOORD5;
+			float2 uv[5] : TEXCOORD6;
 		};
 
 		// Used by Unity internally to handle Texture Tiling and Offset.
@@ -229,9 +232,17 @@ SubShader {
 			#endif
 			output.textures = float4(faceUV, outlineUV);
 
+			//垂直方向
+			output.uv[0] = output.atlas + float2(_MainTex_TexelSize.x * 2.0, 0.0) * _BlurSize;
+			output.uv[1] = output.atlas + float2(_MainTex_TexelSize.x * 1.0, 0.0) * _BlurSize;
+			output.uv[2] = output.atlas;
+			output.uv[3] = output.atlas - float2(_MainTex_TexelSize.x * 1.0, 0.0) * _BlurSize;
+			output.uv[4] = output.atlas - float2(_MainTex_TexelSize.x * 2.0, 0.0) * _BlurSize;
+
 			return output;
 		}
 
+		float weight_Blur[5] = { 0.0545, 0.2442, 0.4026, 0.2442, 0.0545 };//高斯核
 
 		fixed4 PixShader(pixel_t input) : SV_Target
 		{
@@ -290,10 +301,15 @@ SubShader {
 			faceColor += input.underlayColor * (1 - saturate(d - input.texcoord2.w)) * saturate(1 - sd) * (1 - faceColor.a);
 		#endif
 
+		//sum = 1 - saturate(sum);
 		#if GLOW_ON
 			float4 glowColor = GetGlowColor(sd, scale);
 			faceColor.rgb += glowColor.rgb * glowColor.a;
+			//faceColor.rgb = sum;
+			//faceColor.a = c;
 		#endif
+
+
 
 		// Alternative implementation to UnityGet2DClipping with support for softness.
 		#if UNITY_UI_CLIP_RECT
