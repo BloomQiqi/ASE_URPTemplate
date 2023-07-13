@@ -232,17 +232,8 @@ SubShader {
 			#endif
 			output.textures = float4(faceUV, outlineUV);
 
-			//垂直方向
-			output.uv[0] = output.atlas + float2(_MainTex_TexelSize.x * 2.0, 0.0) * _BlurSize;
-			output.uv[1] = output.atlas + float2(_MainTex_TexelSize.x * 1.0, 0.0) * _BlurSize;
-			output.uv[2] = output.atlas;
-			output.uv[3] = output.atlas - float2(_MainTex_TexelSize.x * 1.0, 0.0) * _BlurSize;
-			output.uv[4] = output.atlas - float2(_MainTex_TexelSize.x * 2.0, 0.0) * _BlurSize;
-
 			return output;
 		}
-
-		float weight_Blur[5] = { 0.0545, 0.2442, 0.4026, 0.2442, 0.0545 };//高斯核
 
 		fixed4 PixShader(pixel_t input) : SV_Target
 		{
