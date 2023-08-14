@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AdditionPostProcessRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  postData: {fileID: 11400000, guid: 5ce8b5fb9ca41c54fac210d3c0f17088, type: 2}
+  postData: {fileID: 11400000, guid: 826b7953435cfec44835ce6cae03808b, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

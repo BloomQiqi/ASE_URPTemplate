@@ -177,6 +177,11 @@ namespace UnityEngine.Rendering.Universal
 			cmd.ReleaseTemporaryRT(m_TemporaryColorTexture01.id);
 		}
 
+		///
+		void SetRainFx()
+		{
+
+		}
 		#endregion
 	}
 }

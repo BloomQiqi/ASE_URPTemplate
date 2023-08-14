@@ -21,8 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UI
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: UNITY_UI_ALPHACLIP
+  m_Shader: {fileID: 4800000, guid: 60cbd77c23a1c4641ae008562d60dbf3, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -134,6 +134,7 @@ Material:
     - _SMS_MIN: 0.924
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SoftnessControl: 152.8
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Stencil: 0
@@ -142,7 +143,7 @@ Material:
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
     - _Surface: 0
-    - _UseUIAlphaClip: 1
+    - _UseUIAlphaClip: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

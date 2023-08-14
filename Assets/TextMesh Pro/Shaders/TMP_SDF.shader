@@ -116,13 +116,14 @@ SubShader {
 		#pragma target 3.0
 		#pragma vertex VertShader
 		#pragma fragment PixShader
-		#pragma shader_feature __ BEVEL_ON
-		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
-		#pragma shader_feature __ GLOW_ON
-		#pragma shader_feature __ OUTLINE_ON OUTLINE_OUT_ON OUTLINE_IN_ON 
+#pragma shader_feature __ BEVEL_ON
+#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
+#pragma shader_feature __ GLOW_ON
+#pragma shader_feature __ OUTLINE_ON OUTLINE_OUT_ON OUTLINE_IN_ON
+#pragma shader_feature __ MASK_SOFT MASK_HARD
 
-		#pragma multi_compile __ UNITY_UI_CLIP_RECT
-		#pragma multi_compile __ UNITY_UI_ALPHACLIP
+#pragma multi_compile __ UNITY_UI_CLIP_RECT
+#pragma multi_compile __ UNITY_UI_ALPHACLIP
 
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"
@@ -224,7 +225,13 @@ SubShader {
 			output.color = input.color;
 			output.atlas =	input.texcoord0;
 			output.param =	float4(alphaClip, scale, bias, weight);
+
+			output.mask = half4(vert.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(0, 0) + pixelSize.xy));
+
+			#if MASK_SOFT
 			output.mask = half4(vert.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + pixelSize.xy));
+			#endif
+
 			output.viewDir =	mul((float3x3)_EnvMatrix, _WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, vert).xyz);
 			#if (UNDERLAY_ON || UNDERLAY_INNER)
 			output.texcoord2 = float4(input.texcoord0 + bOffset, bScale, bBias);

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class CameraController : MonoBehaviour
+public class CameraControllerNew : MonoBehaviour
 {
 	// Text m_debugTip;
 	public bool canRotation_X = true;
@@ -76,7 +76,7 @@ public class CameraController : MonoBehaviour
 
 	}
 
-	//¼ÇÂ¼ÉÏÒ»´ÎÊÖ»ú´¥ÃşÎ»ÖÃÅĞ¶ÏÓÃ»§ÊÇÔÚ×ó·Å´ó»¹ÊÇËõĞ¡ÊÖÊÆ  
+	//è®°å½•ä¸Šä¸€æ¬¡æ‰‹æœºè§¦æ‘¸ä½ç½®åˆ¤æ–­ç”¨æˆ·æ˜¯åœ¨å·¦æ”¾å¤§è¿˜æ˜¯ç¼©å°æ‰‹åŠ¿  
 	private Vector2 oldPosition1;
 	private Vector2 oldPosition2;
 
@@ -84,17 +84,17 @@ public class CameraController : MonoBehaviour
 	/*
     private void ScaleCamera()
     {
-        //¼ÆËã³öµ±Ç°Á½µã´¥ÃşµãµÄÎ»ÖÃ  
+        //è®¡ç®—å‡ºå½“å‰ä¸¤ç‚¹è§¦æ‘¸ç‚¹çš„ä½ç½®  
         var tempPosition1 = Input.GetTouch(0).position;
         var tempPosition2 = Input.GetTouch(1).position;
         float currentTouchDistance = Vector3.Distance(tempPosition1, tempPosition2);
         float lastTouchDistance = Vector3.Distance(oldPosition1, oldPosition2);
-        //¼ÆËãÉÏ´ÎºÍÕâ´ÎË«Ö¸´¥ÃşÖ®¼äµÄ¾àÀë²î¾à  
-        //È»ºóÈ¥¸ü¸ÄÉãÏñ»úµÄ¾àÀë  
+        //è®¡ç®—ä¸Šæ¬¡å’Œè¿™æ¬¡åŒæŒ‡è§¦æ‘¸ä¹‹é—´çš„è·ç¦»å·®è·  
+        //ç„¶åå»æ›´æ”¹æ‘„åƒæœºçš„è·ç¦»  
         distance -= ( currentTouchDistance - lastTouchDistance ) * scaleFactor * Time.deltaTime;
-        //°Ñ¾àÀëÏŞÖÆ×¡ÔÚminºÍmaxÖ®¼ä  
+        //æŠŠè·ç¦»é™åˆ¶ä½åœ¨minå’Œmaxä¹‹é—´  
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
-        //±¸·İÉÏÒ»´Î´¥ÃşµãµÄÎ»ÖÃ£¬ÓÃÓÚ¶Ô±È  
+        //å¤‡ä»½ä¸Šä¸€æ¬¡è§¦æ‘¸ç‚¹çš„ä½ç½®ï¼Œç”¨äºå¯¹æ¯”  
         oldPosition1 = tempPosition1;
         oldPosition2 = tempPosition2;
     }
@@ -124,7 +124,7 @@ public class CameraController : MonoBehaviour
 			{
 
 
-				//¼ÆËã³öµ±Ç°Á½µã´¥ÃşµãµÄÎ»ÖÃ  
+				//è®¡ç®—å‡ºå½“å‰ä¸¤ç‚¹è§¦æ‘¸ç‚¹çš„ä½ç½®  
 				if (m_IsSingleFinger)
 				{
 					oldPosition1 = Input.GetTouch(0).position;
@@ -141,17 +141,17 @@ public class CameraController : MonoBehaviour
 					float currentTouchDistance = Vector3.Distance(tempPosition1, tempPosition2);
 					float lastTouchDistance = Vector3.Distance(oldPosition1, oldPosition2);
 
-					//¼ÆËãÉÏ´ÎºÍÕâ´ÎË«Ö¸´¥ÃşÖ®¼äµÄ¾àÀë²î¾à  
-					//È»ºóÈ¥¸ü¸ÄÉãÏñ»úµÄ¾àÀë  
+					//è®¡ç®—ä¸Šæ¬¡å’Œè¿™æ¬¡åŒæŒ‡è§¦æ‘¸ä¹‹é—´çš„è·ç¦»å·®è·  
+					//ç„¶åå»æ›´æ”¹æ‘„åƒæœºçš„è·ç¦»  
 					targetDistance -= (currentTouchDistance - lastTouchDistance) * Time.deltaTime * mouseSettings.wheelSensitivity;
 					//  m_debugTip.text = ( currentTouchDistance - lastTouchDistance ).ToString() + " + " + targetDistance.ToString();
 
 
-					//°Ñ¾àÀëÏŞÖÆ×¡ÔÚminºÍmaxÖ®¼ä  
+					//æŠŠè·ç¦»é™åˆ¶ä½åœ¨minå’Œmaxä¹‹é—´  
 
 
 
-					//±¸·İÉÏÒ»´Î´¥ÃşµãµÄÎ»ÖÃ£¬ÓÃÓÚ¶Ô±È  
+					//å¤‡ä»½ä¸Šä¸€æ¬¡è§¦æ‘¸ç‚¹çš„ä½ç½®ï¼Œç”¨äºå¯¹æ¯”  
 					oldPosition1 = tempPosition1;
 					oldPosition2 = tempPosition2;
 					m_IsSingleFinger = false;

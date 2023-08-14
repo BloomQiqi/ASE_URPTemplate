@@ -4,7 +4,7 @@ using System;
 namespace UnityEngine.Rendering.Universal
 {
 	// 实例化类     添加到Volume组件菜单中
-	[Serializable, VolumeComponentMenu("Addition-Post-processing/BrightnessSaturationContrast")]
+	[Serializable, VolumeComponentMenu("Addtional PostProcess Effeccts/BrightnessSaturationContrast")]
 	// 集成VolumeComponent组件和IPostProcessComponent接口，用以继承Volume框架
 	public class BrightnessSaturationContrast : VolumeComponent, IPostProcessComponent
 	{
