@@ -1,11 +1,11 @@
-Shader "RainRippleFX_New"
+Shader "RainRipple"
 {
 	Properties
 	{
-		_MainTex("Texture", 2D) = "white" {}
+		_MainTex("Main Texture", 2D) = "white" {}
 		_Rain("Rain", 2D) = "white" {}
 		_Ripple("Ripple", 2D) = "white" {}
-		_NoiseTex("Noise Tex", 2D) = "white"{}
+		_NoiseTex("Noise Tex", 2D) = "black"{}
 		_RainForce("RainForce",Range(0,0.5)) = 0
 
 	}
@@ -96,7 +96,7 @@ Shader "RainRippleFX_New"
 					col.rgb += ripple * (1 - i.uv.y) * 0.8 * _RainForce * 2;
 					col.rgb += saturate(rain.r - rain.g * (1 - _RainForce * 0.5) - rain.b * (1 - _RainForce * 0.5)) * 0.15 * (i.uv.y) * _RainForce * 2;
 
-					//col.rgb = depth.x;
+					//col.rgb = half3(fogNoiseR, fogNoiseG, fogNoiseB);
 					return col;
 
 				}

@@ -14,6 +14,7 @@ namespace UnityEngine.Rendering.Universal
 			///在这里扩展后续其他后处理Material引用
 			public Material brightnessSaturationContrast;
 			public Material fog;
+			public Material rainRippleFX;
 		}
 		public Materials materials;
 	}

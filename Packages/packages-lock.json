@@ -156,6 +156,13 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "jp.amagamina.overdraw-for-urp": {
+      "version": "https://github.com/ina-amagami/OverdrawForURP.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ca4f29239c828a1b3ec593bea22a0afd4a40a73c"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

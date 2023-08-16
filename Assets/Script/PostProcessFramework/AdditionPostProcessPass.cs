@@ -27,10 +27,13 @@ namespace UnityEngine.Rendering.Universal
 		// 临时的渲染目标
 		RenderTargetHandle m_TemporaryColorTexture01;
 
+		//相机
+
 		/// 这里扩展后续的属性参数组件引用
 		// 属性参数组件 
 		BrightnessSaturationContrast m_BrightnessSaturationContrast;
 		Fog m_Fog;
+		RainRippleVolume m_RainRippleVolume;
 		
 		public AdditionPostProcessPass(RenderPassEvent evt, AdditionalPostProcessData data, Material blitMaterial = null)
 		{
@@ -64,6 +67,7 @@ namespace UnityEngine.Rendering.Universal
 			/// 这里扩展后续的属性参数组件获取
 			m_BrightnessSaturationContrast = stack.GetComponent<BrightnessSaturationContrast>();
 			m_Fog = stack.GetComponent<Fog>();
+			m_RainRippleVolume = stack.GetComponent<RainRippleVolume>();
 
 			// 从命令缓冲区池中获取一个带标签的渲染命令，该标签名可以在后续帧调试器中见到
 			var cmd = CommandBufferPool.Get(CommandBufferTag);
@@ -96,6 +100,10 @@ namespace UnityEngine.Rendering.Universal
 				SetFog(cmd, m_Materials.fog);
 			}
 
+			if (m_RainRippleVolume.IsActive() && !isSceneViewCamera)
+			{
+				SetRainFx(cmd, ref renderingData);
+			}
 		}
 
 		RenderTextureDescriptor GetStereoCompatibleDescriptor(int width, int height, int depthBufferBits = 0)
@@ -178,9 +186,34 @@ namespace UnityEngine.Rendering.Universal
 		}
 
 		///
-		void SetRainFx()
+		void SetRainFx(CommandBuffer cmd, ref RenderingData renderingData)
 		{
+			//
+			m_Materials.rainRippleFX.SetVector("_CameraForward", renderingData.cameraData.camera.transform.forward);
+			//计算相机视锥体的方向
+			Vector3[] v3 = new Vector3[4];
+			renderingData.cameraData.camera.CalculateFrustumCorners(new Rect(0,0,1,1), renderingData.cameraData.camera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, v3);
+			Vector4[] v4 = new Vector4[4];
+			v4[0] = v3[0];
+			v4[1] = v3[1];
+			v4[2] = v3[2];
+			v4[3] = v3[3];
+			m_Materials.rainRippleFX.SetVectorArray("_FrustumDir", v4);
+			//m_Materials.rainRippleFX.SetTexture("_CameraDepthTexture",new Texture2D(m_Depth));
+			//cmd.SetGlobalTexture("_CameraDepthTexture", m_Depth);
+			int tw = m_Descriptor.width;
+			int th = m_Descriptor.height;
+			var desc = GetStereoCompatibleDescriptor(tw, th);
+			m_TemporaryColorTexture01.Init("tmp_RainFXRT");
+			cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, desc, FilterMode.Bilinear);
 
+			cmd.Blit(m_Source, m_TemporaryColorTexture01.Identifier(), m_Materials.rainRippleFX);
+			cmd.Blit(m_TemporaryColorTexture01.Identifier(), m_Source);
+
+
+
+			// 释放临时RT
+			cmd.ReleaseTemporaryRT(m_TemporaryColorTexture01.id);
 		}
 		#endregion
 	}

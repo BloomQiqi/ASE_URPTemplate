@@ -15,3 +15,4 @@ MonoBehaviour:
   materials:
     brightnessSaturationContrast: {fileID: 2100000, guid: 9c1a33a04179ed64599a3d273c900ac5, type: 2}
     fog: {fileID: 2100000, guid: 4fb7996ad45c7d643ad09e025481a821, type: 2}
+    rainRippleFX: {fileID: 2100000, guid: ad0928cabc9185343a3ef8bf150ba5d8, type: 2}

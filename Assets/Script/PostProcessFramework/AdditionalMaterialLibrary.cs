@@ -8,6 +8,7 @@
 		/// 这里扩展后处理材质属性
 		public readonly Material brightnessSaturationContrast;
 		public readonly Material fog;
+		public readonly Material rainRippleFX;
 
 		/// <summary>
 		/// 初始化时从配置文件中获取材质
@@ -18,6 +19,7 @@
 			/// 这里扩展后处理材质的加载
 			brightnessSaturationContrast = Load(data.materials.brightnessSaturationContrast);
 			fog = Load(data.materials.fog);
+			rainRippleFX = Load(data.materials.rainRippleFX);
 		}
 		Material Load(Material mat)
 		{
@@ -58,6 +60,7 @@
 		{
 			CoreUtils.Destroy(brightnessSaturationContrast);
 			CoreUtils.Destroy(fog);
+			CoreUtils.Destroy(rainRippleFX);
 		}
 	}
 }
