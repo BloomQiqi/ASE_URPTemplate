@@ -9,6 +9,7 @@ public class CameraDepth : MonoBehaviour
     {
         Camera camera = GetComponent<Camera>();
         camera.depthTextureMode |= DepthTextureMode.Depth;
+        camera.depthTextureMode |= DepthTextureMode.DepthNormals;
 
 	}
 

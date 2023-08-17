@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 1236375856}
   - component: {fileID: 1236375860}
   - component: {fileID: 1236375859}
+  - component: {fileID: 1236375861}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -231,13 +232,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236375855}
-  m_LocalRotation: {x: 0.0891791, y: -0.67482233, z: 0.08253067, w: 0.72790843}
-  m_LocalPosition: {x: 7.4209204, y: 4.1087084, z: -8.165977}
+  m_LocalRotation: {x: -0.022579622, y: -0.67954814, z: -0.02107616, w: 0.7329805}
+  m_LocalPosition: {x: 7.4209204, y: 2.73, z: -8.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.54, y: -85.667, z: -0.012}
 --- !u!114 &1236375859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af42606b610d9274593a7c1ad880c12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rainFxMat: {fileID: 2100000, guid: ad0928cabc9185343a3ef8bf150ba5d8, type: 2}
 --- !u!114 &1236375860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +284,18 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1236375861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236375855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32723df33ce2b6345a44232446db7c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1341665960
 GameObject:
   m_ObjectHideFlags: 0

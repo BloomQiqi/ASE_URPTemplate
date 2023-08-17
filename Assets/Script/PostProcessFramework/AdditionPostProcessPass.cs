@@ -190,15 +190,16 @@ namespace UnityEngine.Rendering.Universal
 		{
 			//
 			m_Materials.rainRippleFX.SetVector("_CameraForward", renderingData.cameraData.camera.transform.forward);
-			//计算相机视锥体的方向
-			Vector3[] v3 = new Vector3[4];
-			renderingData.cameraData.camera.CalculateFrustumCorners(new Rect(0,0,1,1), renderingData.cameraData.camera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, v3);
-			Vector4[] v4 = new Vector4[4];
-			v4[0] = v3[0];
-			v4[1] = v3[1];
-			v4[2] = v3[2];
-			v4[3] = v3[3];
-			m_Materials.rainRippleFX.SetVectorArray("_FrustumDir", v4);
+
+			////计算相机视锥体的方向
+			//Vector3[] v3 = new Vector3[4];
+			//renderingData.cameraData.camera.CalculateFrustumCorners(new Rect(0,0,1,1), renderingData.cameraData.camera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, v3);
+			//Vector4[] v4 = new Vector4[4];
+			//v4[0] = v3[0];
+			//v4[1] = v3[1];
+			//v4[2] = v3[2];
+			//v4[3] = v3[3];
+			//m_Materials.rainRippleFX.SetVectorArray("_FrustumDir", v4);
 			//m_Materials.rainRippleFX.SetTexture("_CameraDepthTexture",new Texture2D(m_Depth));
 			//cmd.SetGlobalTexture("_CameraDepthTexture", m_Depth);
 			int tw = m_Descriptor.width;

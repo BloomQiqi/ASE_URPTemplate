@@ -40,6 +40,7 @@ Shader "RainRipple"
 
 				sampler2D _MainTex, _NoiseTex;
 				sampler2D _CameraDepthTexture, _Rain, _Ripple;
+				sampler2D _CameraNormalsTexture;
 				float4x4 _FrustumDir;
 				float3 _CameraForward;
 				fixed _RainForce;
@@ -72,7 +73,7 @@ Shader "RainRipple"
 
 					float linear01Depth = Linear01Depth(depth);
 					float linearEyeDepth = LinearEyeDepth(depth);
-
+					float3 temp;
 					float3 worldPos = _WorldSpaceCameraPos + linearEyeDepth * i.frustumDir.xyz;
 					float2 fogUV = (worldPos.xz + worldPos.y * 0.5) * 0.0025;
 					fixed fogNoiseR = tex2D(_NoiseTex, float2(fogUV.x + _Time.x * 0.15, fogUV.y)).r;
@@ -88,14 +89,14 @@ Shader "RainRipple"
 					ripple *= (fogNoiseR + fogNoiseG) * fogNoiseB + 0.5;
 
 					fixed2 rainUV = fixed2(i.uv.x , i.uv.y * 0.01 + _Time.x * 1.1);
-
+					
 					rainUV.y += i.uv.y * 0.001;
 					rainUV.x += pow(i.uv.y + (_CameraForward.y + 0.5), _CameraForward.y + 1.15) * (rainUV.x - 0.5) * _CameraForward.y;
 					fixed3 rain = tex2D(_Rain, rainUV);
-
+					temp = tex2D(_CameraNormalsTexture, i.uv).rgb;
 					col.rgb += ripple * (1 - i.uv.y) * 0.8 * _RainForce * 2;
 					col.rgb += saturate(rain.r - rain.g * (1 - _RainForce * 0.5) - rain.b * (1 - _RainForce * 0.5)) * 0.15 * (i.uv.y) * _RainForce * 2;
-
+					col.rgb = temp;
 					//col.rgb = half3(fogNoiseR, fogNoiseG, fogNoiseB);
 					return col;
 
