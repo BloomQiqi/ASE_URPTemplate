@@ -29,6 +29,18 @@ namespace UnityEngine.Rendering.Universal
 
 		//相机
 
+		//全屏Mesh
+		Mesh m_Mesh;
+		Mesh Mesh
+		{
+			get 
+			{ 
+				if(m_Mesh == null)
+					m_Mesh = new Mesh() { hideFlags = HideFlags.HideAndDontSave };
+				return m_Mesh; 
+			}
+		}
+
 		/// 这里扩展后续的属性参数组件引用
 		// 属性参数组件 
 		BrightnessSaturationContrast m_BrightnessSaturationContrast;
@@ -208,8 +220,12 @@ namespace UnityEngine.Rendering.Universal
 			m_TemporaryColorTexture01.Init("tmp_RainFXRT");
 			cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, desc, FilterMode.Bilinear);
 
-			cmd.Blit(m_Source, m_TemporaryColorTexture01.Identifier(), m_Materials.rainRippleFX);
-			cmd.Blit(m_TemporaryColorTexture01.Identifier(), m_Source);
+			cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
+
+			cmd.DrawMesh(RenderingUtils.fullscreenMesh, renderingData.cameraData.camera.transform.localToWorldMatrix, m_Materials.rainRippleFX);
+			cmd.SetViewProjectionMatrices(renderingData.cameraData.camera.worldToCameraMatrix, renderingData.cameraData.camera.projectionMatrix);
+			//cmd.Blit(m_Source, m_TemporaryColorTexture01.Identifier(), m_Materials.rainRippleFX);
+			//cmd.Blit(m_TemporaryColorTexture01.Identifier(), m_Source);
 
 
 

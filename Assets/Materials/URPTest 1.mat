@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3398029297987817130
+--- !u!114 &-6006539581152388786
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,13 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RainFx
-  m_Shader: {fileID: 4800000, guid: d7502b5c326c694459e38f9b49cb0901, type: 3}
+  m_Name: URPTest 1
+  m_Shader: {fileID: 4800000, guid: 537063691bae47c47acd1c3332fc2b8f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -37,10 +37,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CameraNormalsTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -68,14 +64,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Noise:
-        m_Texture: {fileID: 2800000, guid: 51bc3100e58497e46bfe469fa7f19e7b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: 51bc3100e58497e46bfe469fa7f19e7b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -84,19 +72,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Rain:
-        m_Texture: {fileID: 2800000, guid: d7a66bf6b3f787a438f6c4bccc8fe4a5, type: 3}
-        m_Scale: {x: 3, y: 0.45}
-        m_Offset: {x: 0, y: 0}
-    - _Ripple:
-        m_Texture: {fileID: 2800000, guid: 7289f7c0774867d468ee902cd6506820, type: 3}
-        m_Scale: {x: 3, y: 3}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -117,64 +93,48 @@ Material:
     - _AlphaCutoff: 0.5
     - _Blend: 0
     - _BumpScale: 1
-    - _CameraForward_Y_Bias: 0.5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthPower: 0.88
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Emission: 0
     - _EnvironmentReflections: 1
-    - _Float10: 27.64
-    - _Float12: 48.52
-    - _Float13: 1.13
-    - _Float14: -0.1
-    - _Float15: 0.05
-    - _Float16: 1.13
-    - _Float17: 1.13
-    - _Float18: 1.76
-    - _Float2: 0.02
-    - _Float20: 3.37
-    - _Float3: 0.1
-    - _Float6: 0.421
+    - _Float0: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Max: 1
     - _Metallic: 0
-    - _Min: 0.659
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _RainForce: 0.144
-    - _RainPower: 2.7
-    - _RainPower1: 2.31
-    - _RainPower2: 2.98
-    - _RainSpeed: 5.13
-    - _RainSpeed2: 7.35
-    - _RainStrength: 2
     - _ReceiveShadows: 1
-    - _RippleDepth: 0.551
-    - _RippleSpeed: 1
-    - _Ripple_Fade: 0.57
-    - _RotataBy_V: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TessEdgeLength: 16
+    - _TessMax: 25
+    - _TessMaxDisp: 25
+    - _TessMin: 9.29
+    - _TessPhongStrength: 0.358
+    - _TessValue: 14.8
+    - _TransAmbient: 0.051
+    - _TransDirect: 0.266
+    - _TransNormal: 0.436
+    - _TransScattering: 20.2
+    - _TransShadow: 0.426
+    - _TransStrength: 8.4
+    - _Translucency: 0.8117647
+    - _TransmissionShadow: 0.5
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - __dirty: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraForward: {r: -0.9952393, g: 0.061745375, b: 0.07540897, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Rain1_Tiling: {r: 2.59, g: 0.6, b: 0, a: 0}
-    - _Rain2_Tiling: {r: 3, g: 0.48, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Vector0: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: d7502b5c326c694459e38f9b49cb0901
+guid: 537063691bae47c47acd1c3332fc2b8f
 ShaderImporter:
   externalObjects: {}
-  defaultTextures:
-  - _Rain: {fileID: 2800000, guid: 47b6a1af8ee1e76468e69ede6a436482, type: 3}
+  defaultTextures: []
   nonModifiableTextures: []
   preprocessorOverride: 0
   userData: 
