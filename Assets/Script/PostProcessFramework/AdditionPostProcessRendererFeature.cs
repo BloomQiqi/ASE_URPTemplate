@@ -31,7 +31,7 @@
 		// 对象初始化时会调用该函数
 		public override void Create()
 		{
-			postPass = new AdditionPostProcessPass(RenderPassEvent.AfterRenderingTransparents, postData);
+			postPass = new AdditionPostProcessPass(RenderPassEvent.AfterRenderingPostProcessing, postData);
 		}
 	}
 }

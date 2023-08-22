@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Experimental.Rendering;
+using UnityEngine.Networking.Types;
 
 namespace UnityEngine.Rendering.Universal
 {
@@ -17,6 +18,7 @@ namespace UnityEngine.Rendering.Universal
 
 		// 主纹理信息
 		RenderTargetIdentifier m_Source;
+		RenderTexture m_Tmp;
 		// 深度信息
 		RenderTargetIdentifier m_Depth;
 		// 当前帧的渲染纹理描述
@@ -26,7 +28,7 @@ namespace UnityEngine.Rendering.Universal
 
 		// 临时的渲染目标
 		RenderTargetHandle m_TemporaryColorTexture01;
-
+		RenderTargetHandle m_TemporaryColorTexture02;
 		//相机
 
 		//全屏Mesh
@@ -38,6 +40,18 @@ namespace UnityEngine.Rendering.Universal
 				if(m_Mesh == null)
 					m_Mesh = new Mesh() { hideFlags = HideFlags.HideAndDontSave };
 				return m_Mesh; 
+			}
+		}
+		MaterialPropertyBlock m_Mpb;
+		MaterialPropertyBlock Mpb
+		{
+			get
+			{
+				if (m_Mpb == null)
+				{
+					m_Mpb = new MaterialPropertyBlock();
+				}
+				return m_Mpb;
 			}
 		}
 
@@ -59,7 +73,7 @@ namespace UnityEngine.Rendering.Universal
 		{
 			m_Descriptor = baseDescriptor;
 			m_Source = source;
-
+			m_Tmp = new RenderTexture(m_Descriptor);
 			m_Depth = depth;
 			m_Destination = destination;
 		}
@@ -80,7 +94,7 @@ namespace UnityEngine.Rendering.Universal
 			m_BrightnessSaturationContrast = stack.GetComponent<BrightnessSaturationContrast>();
 			m_Fog = stack.GetComponent<Fog>();
 			m_RainRippleVolume = stack.GetComponent<RainRippleVolume>();
-
+			
 			// 从命令缓冲区池中获取一个带标签的渲染命令，该标签名可以在后续帧调试器中见到
 			var cmd = CommandBufferPool.Get(CommandBufferTag);
 
@@ -127,6 +141,19 @@ namespace UnityEngine.Rendering.Universal
 			desc.height = height;
 			return desc;
 		}
+
+		//void BlitSp(Camera camera, CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier dest,
+		//	RenderTargetIdentifier depth, Material mat, int passIndex, Rect rect, MaterialPropertyBlock mpb = null)
+		//{
+		//	cmd.SetGlobalTexture("_MainTex", source);
+		//	cmd.SetRenderTarget(dest, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store,
+		//		depth, RenderBufferLoadAction.DontCare, RenderBufferStoreAction.Store);
+		//	cmd.ClearRenderTarget(false, false, Color.clear);
+		//	cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
+		//	cmd.SetViewport(rect);
+		//	cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, mat, 0, passIndex, mpb);
+		//	cmd.SetViewProjectionMatrices(camera.worldToCameraMatrix, camera.projectionMatrix);
+		//}
 
 		#region 处理材质渲染
 		// 亮度、饱和度、对比度渲染
@@ -219,18 +246,25 @@ namespace UnityEngine.Rendering.Universal
 			var desc = GetStereoCompatibleDescriptor(tw, th);
 			m_TemporaryColorTexture01.Init("tmp_RainFXRT");
 			cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, desc, FilterMode.Bilinear);
-
+			//创建模板缓冲
+			cmd.SetGlobalTexture("_MainTex", m_Source);
 			cmd.SetViewProjectionMatrices(Matrix4x4.identity, Matrix4x4.identity);
-
-			cmd.DrawMesh(RenderingUtils.fullscreenMesh, renderingData.cameraData.camera.transform.localToWorldMatrix, m_Materials.rainRippleFX);
+			cmd.SetViewport(new Rect(0, 0, renderingData.cameraData.camera.pixelWidth, renderingData.cameraData.camera.pixelHeight));
+			
+			//cmd.Blit( m_Source , m_Tmp);
+			//Mpb.SetTexture("_MainTex", m_Tmp);
+			
+			cmd.DrawMesh(RenderingUtils.fullscreenMesh, Matrix4x4.identity, m_Materials.rainRippleFX);
 			cmd.SetViewProjectionMatrices(renderingData.cameraData.camera.worldToCameraMatrix, renderingData.cameraData.camera.projectionMatrix);
+
 			//cmd.Blit(m_Source, m_TemporaryColorTexture01.Identifier(), m_Materials.rainRippleFX);
+			//cmd.SetGlobalTexture("_MainTex", m_TemporaryColorTexture01.Identifier());
 			//cmd.Blit(m_TemporaryColorTexture01.Identifier(), m_Source);
-
-
-
+			//cmd.SetRenderTarget(m_Texture);
 			// 释放临时RT
 			cmd.ReleaseTemporaryRT(m_TemporaryColorTexture01.id);
+			//cmd.ReleaseTemporaryRT(m_TemporaryColorTexture02.id);
+			//cmd.ReleaseTemporaryRT(m_Texture);
 		}
 		#endregion
 	}

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: RainFx_GetUV_X
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor v1.9.1.5\n// Available at the
+    Unity Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=19105\nNode;AmplifyShaderEditor.PowerNode;2;-903.7706,-25.14724;Inherit;False;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.TextureCoordinatesNode;3;-1731.319,-259.9756;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.BreakToComponentsNode;4;-1450.668,-216.0856;Inherit;False;FLOAT2;1;0;FLOAT2;0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.SimpleAddOpNode;5;-1258.594,-158.2791;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;6;-1238.551,146.2977;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;7;-856.7817,-199.8777;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;1.57;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;8;-721.4765,-280.744;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;9;-1135.475,-216.7436;Inherit;False;Property;_RotataBy_V;RotataBy_V;17;0;Create;True;0;0;0;False;0;False;0.5;0;-3;3;0;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;10;-1058.781,-125.8773;Inherit;False;Constant;_RotataBy_V_Bias;RotataBy_V_Bias;26;0;Create;True;0;0;0;False;0;False;1.57;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;13;-644.5174,-75.61633;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.WireNode;15;-1233.47,-277.6125;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;1;-465.0064,38.98266;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;16;-2175.624,14.82141;Inherit;False;CameraForward_Y;1;0;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionOutput;0;-142,8;Inherit;False;True;-1;UV_X;0;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;12;-1627.689,-28.38234;Inherit;False;Property;_CameraForward_Y_Bias;CameraForward_Y_Bias;16;0;Create;True;0;0;0;False;0;False;0.5;0.5;0.5;2;0;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;11;-1631.382,199.6157;Inherit;False;Property;_dddd;dddd;19;0;Create;True;0;0;0;False;0;False;3.35;1.13;0;0;0;1;FLOAT;0\nWireConnection;2;0;5;0\nWireConnection;2;1;6;0\nWireConnection;4;0;3;0\nWireConnection;5;0;4;1\nWireConnection;5;1;16;0\nWireConnection;5;2;12;0\nWireConnection;6;0;16;0\nWireConnection;6;1;11;0\nWireConnection;7;0;9;0\nWireConnection;7;1;10;0\nWireConnection;8;0;15;0\nWireConnection;8;1;7;0\nWireConnection;13;0;8;0\nWireConnection;13;1;2;0\nWireConnection;15;0;4;0\nWireConnection;1;0;13;0\nWireConnection;1;1;16;0\nWireConnection;0;0;1;0\nASEEND*/\n//CHKSM=B3D81032634A52D64ACC3600B2891D7F0123A92F"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_headerStyle: 0
+  m_headerColor: {r: 1, g: 0.4, b: 0, a: 1}
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0
+  m_url: 

@@ -5,13 +5,13 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     public Transform tourCamera;
-    #region Ïà»úÒÆ¶¯²ÎÊı
+    #region ç›¸æœºç§»åŠ¨å‚æ•°
     public float moveSpeed = 1.0f;
     public float rotateSpeed = 90.0f;
-    public float shiftRate = 2.0f;// °´×¡Shift¼ÓËÙ
-    public float minDistance = 0.5f;// Ïà»úÀë²»¿É´©¹ıµÄ±íÃæµÄ×îĞ¡¾àÀë£¨Ğ¡ÓÚµÈÓÚ0Ê±¿É´©Í¸ÈÎºÎ±íÃæ£©
+    public float shiftRate = 2.0f;// æŒ‰ä½ShiftåŠ é€Ÿ
+    public float minDistance = 0.5f;// ç›¸æœºç¦»ä¸å¯ç©¿è¿‡çš„è¡¨é¢çš„æœ€å°è·ç¦»ï¼ˆå°äºç­‰äº0æ—¶å¯ç©¿é€ä»»ä½•è¡¨é¢ï¼‰
     #endregion
-    #region ÔË¶¯ËÙ¶ÈºÍÆäÃ¿¸ö·½ÏòµÄËÙ¶È·ÖÁ¿
+    #region è¿åŠ¨é€Ÿåº¦å’Œå…¶æ¯ä¸ªæ–¹å‘çš„é€Ÿåº¦åˆ†é‡
     private Vector3 direction = Vector3.zero;
     private Vector3 speedForward;
     private Vector3 speedBack;
@@ -23,7 +23,7 @@ public class CameraMove : MonoBehaviour
     void Start()
     {
         if (tourCamera == null) tourCamera = gameObject.transform;
-        // ·ÀÖ¹Ïà»ú±ßÔµ´©Í¸
+        // é˜²æ­¢ç›¸æœºè¾¹ç¼˜ç©¿é€
         //if (tourCamera.GetComponent<Camera>().nearClipPlane > minDistance / 3)
         //{
         //    tourCamera.GetComponent<Camera>().nearClipPlane /= 3;
@@ -32,11 +32,13 @@ public class CameraMove : MonoBehaviour
     void Update()
     {
         GetDirection();
-        // ¼ì²âÊÇ·ñÀë²»¿É´©Í¸±íÃæ¹ı½ü
+        // æ£€æµ‹æ˜¯å¦ç¦»ä¸å¯ç©¿é€è¡¨é¢è¿‡è¿‘
         RaycastHit hit;
         while (Physics.Raycast(tourCamera.position, direction, out hit, minDistance))
         {
-            // ÏûÈ¥´¹Ö±ÓÚ²»¿É´©Í¸±íÃæµÄÔË¶¯ËÙ¶È·ÖÁ¿
+            if (hit.collider.isTrigger == true)
+                break;
+            // æ¶ˆå»å‚ç›´äºä¸å¯ç©¿é€è¡¨é¢çš„è¿åŠ¨é€Ÿåº¦åˆ†é‡
             float angel = Vector3.Angle(direction, hit.normal);
             float magnitude = Vector3.Magnitude(direction) * Mathf.Cos(Mathf.Deg2Rad * (180 - angel));
             direction += hit.normal * magnitude;
@@ -45,19 +47,19 @@ public class CameraMove : MonoBehaviour
     }
     private void GetDirection()
     {
-        #region ¼ÓËÙÒÆ¶¯
+        #region åŠ é€Ÿç§»åŠ¨
         if (Input.GetKeyDown(KeyCode.LeftShift)) moveSpeed *= shiftRate;
         if (Input.GetKeyUp(KeyCode.LeftShift)) moveSpeed /= shiftRate;
         #endregion
-        #region ¼üÅÌÒÆ¶¯
-        // ¸´Î»
+        #region é”®ç›˜ç§»åŠ¨
+        // å¤ä½
         speedForward = Vector3.zero;
         speedBack = Vector3.zero;
         speedLeft = Vector3.zero;
         speedRight = Vector3.zero;
         speedUp = Vector3.zero;
         speedDown = Vector3.zero;
-        // »ñÈ¡°´¼üÊäÈë
+        // è·å–æŒ‰é”®è¾“å…¥
         if (Input.GetKey(KeyCode.W)) speedForward = tourCamera.forward;
         if (Input.GetKey(KeyCode.S)) speedBack = -tourCamera.forward;
         if (Input.GetKey(KeyCode.A)) speedLeft = -tourCamera.right;
@@ -66,13 +68,13 @@ public class CameraMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Q)) speedDown = Vector3.down;
         direction = speedForward + speedBack + speedLeft + speedRight + speedUp + speedDown;
         #endregion
-        #region Êó±êĞı×ª
+        #region é¼ æ ‡æ—‹è½¬
         if (Input.GetMouseButton(1))
         {
-            // ×ªÏà»ú³¯Ïò
+            // è½¬ç›¸æœºæœå‘
             tourCamera.RotateAround(tourCamera.position, Vector3.up, Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime);
             tourCamera.RotateAround(tourCamera.position, tourCamera.right, -Input.GetAxis("Mouse Y") * rotateSpeed * Time.deltaTime);
-            // ×ªÔË¶¯ËÙ¶È·½Ïò
+            // è½¬è¿åŠ¨é€Ÿåº¦æ–¹å‘
             direction = V3RotateAround(direction, Vector3.up, Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime);
             direction = V3RotateAround(direction, tourCamera.right, -Input.GetAxis("Mouse Y") * rotateSpeed * Time.deltaTime);
         }
@@ -81,7 +83,7 @@ public class CameraMove : MonoBehaviour
 
     public Vector3 V3RotateAround(Vector3 source, Vector3 axis, float angle)
     {
-        Quaternion q = Quaternion.AngleAxis(angle, axis);// Ğı×ªÏµÊı
-        return q * source;// ·µ»ØÄ¿±êµã
+        Quaternion q = Quaternion.AngleAxis(angle, axis);// æ—‹è½¬ç³»æ•°
+        return q * source;// è¿”å›ç›®æ ‡ç‚¹
     }
 }
