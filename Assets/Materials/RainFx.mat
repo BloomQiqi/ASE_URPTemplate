@@ -85,8 +85,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Rain:
-        m_Texture: {fileID: 2800000, guid: d7a66bf6b3f787a438f6c4bccc8fe4a5, type: 3}
-        m_Scale: {x: 3, y: 0.45}
+        m_Texture: {fileID: 2800000, guid: 47b6a1af8ee1e76468e69ede6a436482, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ripple:
         m_Texture: {fileID: 2800000, guid: 7289f7c0774867d468ee902cd6506820, type: 3}
@@ -94,6 +94,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: 67eb2335e05d3c7489903a66ca392768, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample4:
+        m_Texture: {fileID: 2800000, guid: d4d7a559b6d1cbb47918a9b11b2f2f33, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -130,6 +138,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Float1: 0.8
     - _Float10: 27.64
     - _Float12: 48.52
     - _Float13: 0.37
@@ -144,7 +153,8 @@ Material:
     - _Float21: 0.475
     - _Float22: 0.5
     - _Float3: 0.1
-    - _Float6: 0.421
+    - _Float6: 0.416
+    - _FlowSpeed: 0.1
     - _FogUV_YScale: 0.03
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -152,16 +162,16 @@ Material:
     - _Max: 1
     - _Metallic: 0
     - _Min: 0.659
-    - _MoveSpeed: 0.034
+    - _MoveSpeed: 0.01
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _RainForce: 0.144
     - _RainPower: 2.7
-    - _RainPower1: 2.93
-    - _RainPower2: 3
-    - _RainSpeed: 5.13
-    - _RainSpeed2: 6.05
+    - _RainPower1: 3.76
+    - _RainPower2: 1
+    - _RainSpeed: 5.56
+    - _RainSpeed2: 10
     - _RainStrength: 2
     - _ReceiveShadows: 1
     - _RippleDepth: 0
@@ -171,9 +181,10 @@ Material:
     - _RippleYMin: 0.4650793
     - _RippleYScale: 2
     - _Ripple_Fade: 0.57
-    - _RotataBy_V: -0.26
+    - _RotataBy_V: 0.42
     - _RotataBy_V1: 0
-    - _RotataBy_V2: 0
+    - _RotataBy_V2: -0.09
+    - _Size: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -182,12 +193,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - __dirty: 0
+    - _distance: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraForward: {r: 0.6346119, g: -0.3104554, b: 0.70773244, a: 0}
+    - _CameraForward: {r: -0.8120459, g: -0.41652358, b: 0.40876606, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Rain1_Tiling: {r: 4.01, g: 0.6, b: 0, a: 0}
+    - _FlowDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _FlowStrength: {r: 1, g: 1, b: 0, a: 0}
+    - _Rain1_Tiling: {r: 5, g: 0.58, b: 0, a: 0}
     - _Rain2_Tiling: {r: 3, g: 0.48, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Vector0: {r: 0, g: 0, b: 0, a: 0}
