@@ -1,4 +1,5 @@
-﻿using UnityEngine.Experimental.Rendering;
+﻿using System.Collections.Generic;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Networking.Types;
 
 namespace UnityEngine.Rendering.Universal
@@ -15,6 +16,13 @@ namespace UnityEngine.Rendering.Universal
 		Material m_BlitMaterial;
 		AdditionalMaterialLibrary m_Materials;
 		AdditionalPostProcessData m_Data;
+
+		//test 设置LightMode类型
+		string m_ProfilerTag;
+		ProfilingSampler m_ProfilingSampler;
+		RenderStateBlock m_RenderStateBlock;
+		List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>();
+		bool m_IsOpaque;
 
 		// 主纹理信息
 		RenderTargetIdentifier m_Source;
@@ -67,6 +75,8 @@ namespace UnityEngine.Rendering.Universal
 			m_Data = data;
 			m_Materials = new AdditionalMaterialLibrary(data);
 			m_BlitMaterial = blitMaterial;
+
+
 		}
 
 		public void Setup(in RenderTextureDescriptor baseDescriptor, in RenderTargetIdentifier source, in RenderTargetIdentifier depth, in RenderTargetHandle destination)
@@ -97,6 +107,14 @@ namespace UnityEngine.Rendering.Universal
 			
 			// 从命令缓冲区池中获取一个带标签的渲染命令，该标签名可以在后续帧调试器中见到
 			var cmd = CommandBufferPool.Get(CommandBufferTag);
+
+			using (new ProfilingScope(cmd, m_ProfilingSampler))
+			{
+				var sortFlags = (m_IsOpaque) ? renderingData.cameraData.defaultOpaqueSortFlags : SortingCriteria.CommonTransparent;
+				DrawingSettings drawSettings = CreateDrawingSettings(m_ShaderTagIdList, ref renderingData, sortFlags);
+				
+			}
+
 
 			// 调用渲染函数
 			Render(cmd, ref renderingData);

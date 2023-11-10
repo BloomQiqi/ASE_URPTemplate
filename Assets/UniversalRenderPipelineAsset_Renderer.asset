@@ -29,7 +29,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -92695703023834846}
   - {fileID: 4473604707680932095}
-  m_RendererFeatureMap: 22290fcdbfadb6feff50d68ac76f153e
+  - {fileID: 645347786985175747}
+  m_RendererFeatureMap: 22290fcdbfadb6feff50d68ac76f153ec3fad59f64bcf408
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -58,6 +59,28 @@ MonoBehaviour:
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 0
   m_AccurateGbufferNormals: 0
+--- !u!114 &645347786985175747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5ce549e0b646a7adf00b1b9fc8603d, type: 3}
+  m_Name: GrassRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  bendingShader: {fileID: 0}
+  settings:
+    enableBending: 1
+    bendingRenderRange: 50
+    forwardPerspectiveCorrection: 1
+    ditheringNoise: {fileID: 2800000, guid: 81200413a40918d4d8702e94db29911c, type: 3}
+    animateDithering: 1
+    ignoreSceneView: 0
+    ignoreOverlayCamera: 1
 --- !u!114 &4473604707680932095
 MonoBehaviour:
   m_ObjectHideFlags: 0
