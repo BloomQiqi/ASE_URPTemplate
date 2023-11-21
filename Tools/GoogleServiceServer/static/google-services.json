@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1045940933722",
+    "project_id": "mtae-36aba",
+    "storage_bucket": "mtae-36aba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045940933722:android:4029640b46f0ee70143463",
+        "android_client_info": {
+          "package_name": "com.pathea.eufaula"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045940933722-c38sj43d6o101s0h7lgavbpv0120q5cc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pathea.eufaula",
+            "certificate_hash": "2a5344309cad7e3fd028b26bd8b91be3f4ac7a7c"
+          }
+        },
+        {
+          "client_id": "1045940933722-i4kt9bilv4ro5n2o07rbf55l7905cji3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuL3qluilZTOkxCdsci8AA9nCn5RIP4YE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045940933722-i4kt9bilv4ro5n2o07rbf55l7905cji3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1045940933722-r107dhhuspgfv4mk6n50mououmfpbjoc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pathea.eufaula"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
